@@ -662,13 +662,10 @@ static void setTipOffset() {
 		osDelay(333);
 	}
 	systemSettings.CalibrationOffset = offset / 15;
-	// Need to remove from this the ambient temperature offset
-	uint32_t ambientoffset = getHandleTemperature(); // Handle temp in C
-	ambientoffset *=1000;
-	ambientoffset /= tipGainCalValue;
 	setCalibrationOffset(systemSettings.CalibrationOffset);  // store the error
 	osDelay(100);
 }
+
 static void calibration_enterSimpleCal(void) {
 	// User has entered into the simple cal routine
 	if (userConfirmation(SettingsCalibrationWarning)) {

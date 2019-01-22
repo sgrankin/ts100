@@ -24,17 +24,16 @@ void setCalibrationOffset(int16_t offSet) {
 }
 uint16_t getHandleTemperature() {
 	// We return the current handle temperature in X10 C
-	// TMP36 in handle, 0.5V offset and then 10mV per deg C (0.75V @ 25C for
-	// example) STM32 = 4096 count @ 3.3V input -> But We oversample by 32/(2^2) =
-	// 8 times oversampling Therefore 32768 is the 3.3V input, so 0.1007080078125
-	// mV per count So we need to subtract an offset of 0.5V to center on 0C
-	// (4964.8 counts)
-	//
+	// TMP36 in handle, 0.5V offset and then 10mV per deg C (0.75V @ 25C for example)
+	// STM32 = 4096 count @ 3.3V input -> But
+	// We oversample by 32/(2^2) = 8 times oversampling
+	// Therefore 32768 is the 3.3V input, so 0.1007080078125 mV per count
+	// So we need to subtract an offset of 0.5V to center on 0C (4964.8 counts)
 	int32_t result = getADC(0);
 	result -= 4965;  // remove 0.5V offset
 	// 10mV per C
-	// 99.29 counts per Deg C above 0C
-	result *= 10;
+	// 99.29 counts per Deg C above 0C; times 10 because result is X10 C.
+	result *= 100;
 	result /= 993;
 	return result;
 }
